@@ -17,11 +17,11 @@ import androidx.navigation.compose.rememberNavController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(navController: NavController, number: Int) {
+fun DetailScreen(navController: NavController, name: String) {
     Scaffold(topBar = { TopAppBar(title = { Text(text = "Detail Screen") }) })
     {
         Text(
-            text = "Number $number",
+            text = "title $name",
             style = MaterialTheme.typography.h2,
             modifier = Modifier.fillMaxSize(),
             color = Color.Black,
@@ -35,5 +35,5 @@ fun DetailScreen(navController: NavController, number: Int) {
 @Preview
 @Composable
 fun DetailPreview() {
-    DetailScreen(navController = rememberNavController(), 1)
+    DetailScreen(navController = rememberNavController(), "title")
 }

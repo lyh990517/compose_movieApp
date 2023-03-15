@@ -19,12 +19,12 @@ fun MovieApp(viewModel: MainViewModel = viewModel()) {
             HomeScreen(navController,viewModel)
         }
         composable(
-            "detail/{number}",
-            arguments = listOf(navArgument("number") { type = NavType.IntType })
+            "detail/{name}",
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
         ) {
             DetailScreen(
                 navController = navController,
-                number = it.arguments?.getInt("number") ?: 0
+                name = it.arguments?.getString("name") ?: "noThing"
             )
         }
     }

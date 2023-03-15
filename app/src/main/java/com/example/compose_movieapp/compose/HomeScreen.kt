@@ -44,7 +44,10 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
                             MovieItem(
                                 title = movie.movieNm,
                                 rank = movie.rank,
-                                openDate = movie.openDt
+                                openDate = movie.openDt,
+                                modifier = Modifier.clickable {
+                                    navController.navigate("detail/${movie.movieNm}")
+                                }
                             )
                         }
                     }
@@ -58,7 +61,7 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
 }
 
 @Composable
-fun MovieItem(modifier: Modifier = Modifier, title: String, rank: String, openDate: String) {
+fun MovieItem(modifier: Modifier, title: String, rank: String, openDate: String) {
     Surface(modifier = modifier.fillMaxWidth()) {
         Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
             Text(text = title, modifier = modifier.padding(9.dp))
@@ -80,5 +83,5 @@ fun HomeScreenPreview() {
 @Preview
 @Composable
 fun ItemPreview() {
-    MovieItem(title = "1", rank = "1", openDate = "1")
+    MovieItem(title = "1", rank = "1", openDate = "1", modifier = Modifier)
 }
