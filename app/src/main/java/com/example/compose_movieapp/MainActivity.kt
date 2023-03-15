@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity(), CoroutineScope {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MovieApp()
+                    MovieApp(viewModel)
                 }
             }
         }
