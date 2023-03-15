@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.example.compose_movieapp.compose.MovieApp
 import com.example.compose_movieapp.ui.theme.Compose_movieAppTheme
 import com.example.compose_movieapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,12 +42,11 @@ class MainActivity : ComponentActivity(), CoroutineScope {
         }
         setContent {
             Compose_movieAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    MovieApp()
                 }
             }
         }
@@ -72,6 +72,7 @@ fun Greeting(
     viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val a = viewModel.uiState.collectAsState()
+
     Text(text = "Hello ${a.value}!")
 }
 
