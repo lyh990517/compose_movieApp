@@ -12,10 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,40 +39,19 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
         val state = viewModel.uiState.collectAsState()
         Column(modifier = Modifier) {
             DateView(date = date, viewModel = viewModel)
-            when (state.value) {
-                is MovieState.Loading -> {
-                    Text(text = "Loading...", modifier = Modifier.padding(16.dp))
-                }
-                is MovieState.Success -> {
-                    val movieData = state.value as MovieState.Success
-                    if (movieData.data != null) {
-                        LazyColumn {
-                            items(movieData.data) { movie ->
-                                MovieItem(
-                                    title = movie.movieNm,
-                                    rank = movie.rank,
-                                    openDate = movie.openDt,
-                                    modifier = Modifier.clickable {
-                                        navController.navigate("detail/${movie.movieNm}")
-                                    }
-                                )
-                            }
-                        }
-                    } else {
-                        Text(text = "Loading Fail...", modifier = Modifier.padding(16.dp))
-                    }
-                }
-                else -> {}
-            }
+            MovieList(state = state, navController = navController)
         }
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DateView(date: MutableState<LocalDate>,viewModel: MainViewModel){
-    Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+fun DateView(date: MutableState<LocalDate>, viewModel: MainViewModel) {
+    Row(
+        modifier = Modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         IconButton(onClick = {
             date.value = date.value.plusDays(1)
             val today = date.value as LocalDate
@@ -98,6 +74,39 @@ fun DateView(date: MutableState<LocalDate>,viewModel: MainViewModel){
         Text(text = "${date.value.month.value} 월")
         Spacer(modifier = Modifier.padding(start = 10.dp))
         Text(text = "${date.value.dayOfMonth} 일")
+    }
+}
+
+@Composable
+fun MovieList(state: State<MovieState>, navController: NavController) {
+    when (state.value) {
+        is MovieState.Loading -> {
+            Text(text = "Loading...", modifier = Modifier.padding(16.dp))
+        }
+        is MovieState.Success -> {
+            val movieData = state.value as MovieState.Success
+            if (movieData.data != null) {
+                LazyColumn {
+                    items(movieData.data) { movie ->
+                        MovieItem(
+                            title = movie.movieNm,
+                            rank = movie.rank,
+                            openDate = movie.openDt,
+                            modifier = Modifier.clickable {
+                                navController.navigate("detail/${movie.movieNm}")
+                            }
+                        )
+                    }
+                }
+            } else {
+                Text(text = "Loading Fail...", modifier = Modifier.padding(16.dp))
+            }
+        }
+        is MovieState.Error -> {
+            val movieData = state.value as MovieState.Error
+            Text(text = "Fail... ${movieData.e.message}", modifier = Modifier.padding(16.dp))
+        }
+        else -> {}
     }
 }
 
