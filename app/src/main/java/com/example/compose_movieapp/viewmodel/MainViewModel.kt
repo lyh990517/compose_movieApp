@@ -29,6 +29,7 @@ class MainViewModel @Inject constructor(
     val detailState get() = _detailState
 
     fun getMovies(date: String) = viewModelScope.launch {
+        Log.e(date,"$date")
         getMovieListUseCase.getMovies(date).catch {
         }.collect {
             val state = MovieState.Success(it.boxofficeResult.dailyBoxOfficeList)
@@ -43,7 +44,6 @@ class MainViewModel @Inject constructor(
         getOneMovieUseCase.getOne(name).catch {
 
         }.collect {
-            Log.e("name", "${it.movieNm}")
             _detailState.value = DetailState.Success(it)
         }
     }
