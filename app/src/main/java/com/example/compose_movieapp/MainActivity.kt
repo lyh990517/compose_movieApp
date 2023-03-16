@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.example.compose_movieapp.compose.MovieApp
+import com.example.compose_movieapp.state.MovieState
 import com.example.compose_movieapp.ui.theme.Compose_movieAppTheme
 import com.example.compose_movieapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

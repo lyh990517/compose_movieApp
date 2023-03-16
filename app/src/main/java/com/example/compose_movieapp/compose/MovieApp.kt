@@ -16,7 +16,7 @@ fun MovieApp(viewModel: MainViewModel = viewModel()) {
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            HomeScreen(navController,viewModel)
+            HomeScreen(navController, viewModel)
         }
         composable(
             "detail/{name}",
@@ -24,7 +24,8 @@ fun MovieApp(viewModel: MainViewModel = viewModel()) {
         ) {
             DetailScreen(
                 navController = navController,
-                name = it.arguments?.getString("name") ?: "noThing"
+                name = it.arguments?.getString("name") ?: "noThing",
+                viewModel = viewModel
             )
         }
     }
@@ -32,6 +33,6 @@ fun MovieApp(viewModel: MainViewModel = viewModel()) {
 
 @Preview
 @Composable
-fun MovieAppPreview(){
+fun MovieAppPreview() {
     MovieApp(viewModel())
 }

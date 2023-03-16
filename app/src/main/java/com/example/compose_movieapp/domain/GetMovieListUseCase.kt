@@ -1,8 +1,6 @@
 package com.example.compose_movieapp.domain
 
-import com.example.compose_movieapp.data.BoxOfficeResponse
-import com.example.compose_movieapp.data.MovieRepository
-import kotlinx.coroutines.flow.collect
+import com.example.compose_movieapp.data.repository.MovieRepository
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 

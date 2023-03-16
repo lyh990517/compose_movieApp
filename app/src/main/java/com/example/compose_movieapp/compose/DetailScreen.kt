@@ -8,24 +8,46 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.compose_movieapp.state.DetailState
+import com.example.compose_movieapp.viewmodel.MainViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailScreen(navController: NavController, name: String) {
+fun DetailScreen(navController: NavController, name: String, viewModel: MainViewModel) {
+    viewModel.getOneMovie(name)
+    val state = viewModel.detailState.collectAsState()
     Scaffold(topBar = { TopAppBar(title = { Text(text = "Detail Screen") }) })
     {
-        Text(
-            text = "title $name",
-            style = MaterialTheme.typography.h2,
-            modifier = Modifier.fillMaxSize(),
-            color = Color.Black,
-        )
+        when (state.value) {
+            is DetailState.Loading -> {
+                Text(
+                    text = "Loading..",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                )
+            }
+            is DetailState.Success -> {
+                val data = state.value as DetailState.Success
+                val movie = data.data
+                Text(
+                    text = "title ${movie.movieNm}",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                )
+            }
+            else -> {
+
+            }
+        }
         BackHandler {
             navController.popBackStack()
         }
@@ -35,5 +57,4 @@ fun DetailScreen(navController: NavController, name: String) {
 @Preview
 @Composable
 fun DetailPreview() {
-    DetailScreen(navController = rememberNavController(), "title")
 }

@@ -1,4 +1,4 @@
-package com.example.compose_movieapp
+package com.example.compose_movieapp.state
 
 import com.example.compose_movieapp.data.BoxOffice
 
