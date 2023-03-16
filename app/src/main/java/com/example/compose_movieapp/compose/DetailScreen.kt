@@ -36,14 +36,20 @@ fun DetailScreen(navController: NavController, name: String, viewModel: MainView
                 val data = state.value as DetailState.Success
                 val movie = data.data
                 Text(
-                    text = "title ${movie.movieNm}",
+                    text = "${movie.movieNm}",
                     style = MaterialTheme.typography.h2,
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Black,
                 )
             }
-            else -> {
-
+            is DetailState.Error -> {
+                val detailData = state.value as DetailState.Error
+                Text(
+                    text = "fail.. ${detailData.e.message}",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                )
             }
         }
         BackHandler {
