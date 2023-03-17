@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.compose_movieapp.state.MovieState
 import com.example.compose_movieapp.viewmodel.MainViewModel
+import kotlinx.coroutines.Job
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -124,6 +125,7 @@ fun MovieItem(modifier: Modifier, title: String, rank: String, openDate: String)
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun HomeScreenPreview() {

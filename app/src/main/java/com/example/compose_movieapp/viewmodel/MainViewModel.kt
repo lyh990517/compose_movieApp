@@ -9,6 +9,8 @@ import com.example.compose_movieapp.domain.GetOneMovieUseCase
 import com.example.compose_movieapp.domain.InsertOneMovieUseCase
 import com.example.compose_movieapp.state.DetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -28,15 +30,22 @@ class MainViewModel @Inject constructor(
     private val _detailState = MutableStateFlow<DetailState>(DetailState.Loading)
     val detailState get() = _detailState
 
-    fun getMovies(date: String) = viewModelScope.launch {
-        Log.e(date, "$date")
-        getMovieListUseCase.getMovies(date).catch {
-            _uiState.value = MovieState.Error(it)
-        }.collect {
-            val state = MovieState.Success(it.boxofficeResult.dailyBoxOfficeList)
-            _uiState.value = state
-            state.data?.forEach { boxOffice ->
-                insertOneMovieUseCase.insertOne(boxOffice)
+    private var _fetchJob: Job = Job()
+    fun getMovies(date: String) {
+        _fetchJob = viewModelScope.launch {
+            if (_fetchJob.isActive) {
+                Log.e(date, "cancel")
+                _fetchJob.cancelAndJoin()
+            }
+            getMovieListUseCase.getMovies(date).catch {
+                _uiState.value = MovieState.Error(it)
+            }.collect {
+                Log.e(date,"${it.boxofficeResult.dailyBoxOfficeList}")
+                val state = MovieState.Success(it.boxofficeResult.dailyBoxOfficeList)
+                _uiState.value = state
+                state.data?.forEach { boxOffice ->
+                    insertOneMovieUseCase.insertOne(boxOffice)
+                }
             }
         }
     }

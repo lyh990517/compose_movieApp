@@ -14,7 +14,7 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
     override suspend fun getMovies(targetDate: String): Flow<BoxOfficeResponse> =
         flow {
-            val response = api.getDailyBoxOfficeList(targetDt = targetDate, itemPerPage = "100")
+            val response = api.getDailyBoxOfficeList(targetDt = targetDate, itemPerPage = "20")
             response.body()?.let { response ->
                 emit(response)
             }
